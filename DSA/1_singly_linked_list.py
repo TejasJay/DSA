@@ -73,11 +73,20 @@ class LinkedList:
                 last.next = new_node
 
                     
+    def delete(self, value):
+        # if we try to delete a value from the LL that isnt present we dont do anything
+        # if the value is the current head then we assign the head to the last's next
+        # if value is somewhere in between, we look ahead if current's next / last's next's next value = given value, if yes then we point the last's next to it.
+        last = self.head
+        if last is not None:
+            if last.value == value:
+                self.head = last.next
+            else:
+                while last.next:
+                    if last.next.next == value:
+                        last.next = last.next.next
+                        break
 
-        pass
-
-    def delete(self, index):
-        pass
 
     def pop(self, index):
         pass
