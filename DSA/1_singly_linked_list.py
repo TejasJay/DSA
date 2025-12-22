@@ -7,18 +7,32 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
+    # O(n) - linear runtime
     def __repr__(self):
-        pass
+        # there the LL is empty then return an empty list
+        # if there are elements then first set the last to point the head
+        # now until the last's next is not 0 we iterate bu moving the last reference to its next node
+        # concat all the nodes's values to dusplay
+        if self.head is None:
+            return "[]"
+        else:
+            last = self.head
+            return_str = f"[ {last.value}"
+            while last.next:
+                last = last.next
+                return_str += f" -> {last.value}"
+            return_str += " ]"
+            return return_str
 
     # O(n) - linear runtime
     def __contains__(self, value):
-        # point the last to the head and iterate it by shifting the last to the next until the last's next is not None
-        # if the last's value is equal to the give value then return true, else false
-        last = self.head
-        while last.next is not None:
-            if last.value == value:
+        # point the curr to the head and iterate it by shifting the curr to the next until the last's next is not None
+        # if the curr's value is equal to the give value then return true, else false
+        curr = self.head
+        while curr is not None:
+            if curr.value == value:
                 return True
-            last = last.next
+            curr = curr.next
         return False
 
     # O(n) - linear time
@@ -72,7 +86,7 @@ class LinkedList:
                 new_node.next = last.next
                 last.next = new_node
 
-                    
+    # O(n) - linear time            
     def delete(self, value):
         # if we try to delete a value from the LL that isnt present we dont do anything
         # if the value is the current head then we assign the head to the last's next
@@ -83,18 +97,62 @@ class LinkedList:
                 self.head = last.next
             else:
                 while last.next:
-                    if last.next.next == value:
+                    if last.next.value == value:
                         last.next = last.next.next
                         break
+                    last = last.next
 
-
+    # O(n) - Linear time             
     def pop(self, index):
-        pass
+        # if there is no head / or no nodes in the LL and an index is passed, we raise a value error
+        # if the given index is after the last element of the LL (which is None), we raise a value error
+        if self.head is None:
+            raise ValueError("Index out of bounds")
+        else:
+            last = self.head
+            for i in range(index - 1):
+                if last.next is None:
+                    raise ValueError("Index out of bounds")
+                last = last.next
+            if last.next is None:
+                raise ValueError("Index out of bounds")
+            else:
+                last.next = last.next.next
 
+    # O(n) - Linear time 
     def get(self, index):
-        pass
+        # same principles as the others but this time we return the value when we reach the index
+        if self.head is None:
+            raise ValueError("Index out of bounds")
+        else:
+            last = self.head
+            for i in range(index):
+                if last.next is None:
+                    raise ValueError("Index out of bounds")
+                last = last.next
+            return last.value
 
     
 if __name__ == "__main__":
-    pass
+    ll = LinkedList()
+
+    ll.append(10)
+    ll.append(5)
+    ll.append(18)
+    ll.append(22)
+    ll.append(29)
+    ll.prepend(100)
+
+    ll.insert(200, 1)
+
+    ll.delete(18)
+
+    ll.pop(1)
+
+    print(ll.get(1))
+    print(29 in ll)
+    print(800 in ll)
+    print(29 in ll)
+    print(ll)
+
 
