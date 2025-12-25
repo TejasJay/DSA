@@ -25,7 +25,7 @@ class MinHeap:
     
     # O(log n)
     def insert(self, key, value):
-        self.heap.append((key, value))
+        self.heap.append([key, value])
         self._sift_up(len(self.heap) - 1) # we sift up the index of the new element added to the heap, that needs its position to be sifted up to maintain the heap structure. This is the last element so (lenght - 1) is the proper index. 
 
     # O(1)
@@ -43,6 +43,7 @@ class MinHeap:
         if self.heap: # if there are elements in the heap after poping
             self.heap[0] = last_element # we take the last element of the heap and put it in the first position
             self._sift_down(0) # when we place the last element in the first position of the heap the heap might not have a proper structure, so we need to move this element down by bring the other element forward.
+        return min_element
 
     # O(n)
     def heapify(self, elements): # process of converting a list of elements into proper heap structure
@@ -53,7 +54,7 @@ class MinHeap:
 
     # O(n)
     def meld(self, other_heap): # combine one heap with another
-        combined_heap = self.heap + other_heap
+        combined_heap = self.heap + other_heap.heap
         self.heapify(combined_heap) # calling the above method to adjust both the heaps in correct heap structure
         other_heap = [] # in the end since the heaps are combined we adjust the other_heap back to empty list
 
@@ -76,7 +77,7 @@ class MinHeap:
     # O(log n)
     def _sift_up(self, index): # also called swim operation, this is used to move nodes up by comparing to its parent to maintain the heap structure when an new node is added, ie if the parent is larger than current index element then the current index element needs to move up.
         parent_index = self._parent(index) # get the parent's index of the current element
-        while parent_index is not None and self.head[index][0] < self.heap[parent_index][0]: # while Im not reaching the top of the heap and self.head[index][0] < self.heap[parent_index][0] is used because we are comparing the current element's key to the parent's key 
+        while parent_index is not None and self.heap[index][0] < self.heap[parent_index][0]: # while Im not reaching the top of the heap and self.head[index][0] < self.heap[parent_index][0] is used because we are comparing the current element's key to the parent's key 
             self.heap[index], self.heap[parent_index] = self.heap[parent_index], self.heap[index] # we replace the positions of the parent and current element
             index = parent_index # now the current index is at the parent's index because we swapped the positions
             parent_index = self._parent(index) # Now we fetch the new parent's index to the current index's position. we do this until the while condition is met.
@@ -122,3 +123,9 @@ if __name__ == "__main__":
 
     heapq.heappush(myList, 2)
     print(myList)
+
+    min_heap2 = MinHeap()
+    min_heap2.heapify([[5, '5'], [7, '7'], [2, '2']])
+    min_heap.meld(min_heap2)
+    print(min_heap)
+
